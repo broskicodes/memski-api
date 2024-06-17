@@ -1,0 +1,3 @@
+*.ipynb
+.env
+qdrant_storage/
