@@ -20,9 +20,16 @@ config = {
 
 mem_store = Memory.from_config(config)
 
-@app.route('/')
-def hello():
-    return mem_store.get_all()
+@app.route('/query', methods=["POST"])
+def query_memories():
+    json_data = request.get_json()
+    user_id = json_data.get("user_id")
+    query = json_data.get("query")
+
+
+    memories = mem_store.search(query, user_id=user_id, limit=5)
+
+    return [{'text': memory['text'], 'score': memory['score']} for memory in memories]
 
 @app.route("/save", methods=["POST"])
 def save_memory():
