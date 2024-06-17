@@ -10,6 +10,8 @@ config = {
   "vector_store": {
     "provider": "qdrant",
     "config": {
+      # "host": "localhost",
+      # "port": 6333
       "url": f"{os.getenv('QDRANT_API_ENDPOINT', 'localhost')}:6333",
       "api_key": os.getenv("QDRANT_API_KEY")
     }
@@ -20,19 +22,18 @@ mem_store = Memory.from_config(config)
 
 @app.route('/')
 def hello():
-    return 'Hello, World!'
+    return mem_store.get_all()
 
 @app.route("/save", methods=["POST"])
 def save_memory():
     json_data = request.get_json()
     user_id = json_data.get("user_id")
     memory = json_data.get("memory")
+    metadata = json_data.get("metadata") if json_data.get("metadata") else None
 
-    print(user_id)
-    print(memory)
+    mem_store.add(memory, user_id=user_id, metadata=metadata)
 
-    return "ok"
-
+    return "memory added successfully"
 
 if __name__ == '__main__':
     app.run()
