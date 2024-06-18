@@ -20,6 +20,10 @@ config = {
 
 mem_store = Memory.from_config(config)
 
+@app.route("/", methods=["GET"])
+def hello():
+  return "hello"
+
 @app.route('/query', methods=["POST"])
 def query_memories():
     json_data = request.get_json()
