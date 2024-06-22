@@ -43,7 +43,7 @@ def save_memory():
 
     return "memory added successfully"
 
-@app.route("/prompt")
+@app.route("/prompt", methods=["POST"])
 def rewrite_prompt():
     prompt_id = "5b95a4a2-5092-4b71-9276-ece797bc195f"
 
