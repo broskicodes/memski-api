@@ -21,7 +21,7 @@ config = {
 wordware_api_key = os.getenv("WORDWARE_API_KEY")
 mem_store = Memory.from_config(config)
 
-@app.route('memory/query', methods=["POST"])
+@app.route('/memory/query', methods=["POST"])
 def query_memories():
     json_data = request.get_json()
     user_id = json_data.get("user_id")
@@ -32,7 +32,7 @@ def query_memories():
 
     return [{'text': memory['text'], 'score': memory['score']} for memory in memories]
 
-@app.route("memory/save", methods=["POST"])
+@app.route("/memory/save", methods=["POST"])
 def save_memory():
     json_data = request.get_json()
     user_id = json_data.get("user_id")
