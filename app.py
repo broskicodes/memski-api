@@ -85,11 +85,14 @@ def rewrite_prompt():
                 # Or we can read from the outputs at the end
                 # Currently we include everything by ID and by label - this will likely change in future in a breaking
                 # change but with ample warning
-                print("\nFINAL OUTPUTS:")
-                print(json.dumps(value, indent=4))
+                # print("\nFINAL OUTPUTS:")
+                # print(json.dumps(value, indent=4))
+                # output = json.loads(line.decode('utf-8'))
+                # print(value["values"].keys())
+                return value["values"]["new_prompt"]
 
-    print(r.text)
-    
+    # print(r.text)
+
     return "ok"
 
 if __name__ == '__main__':
