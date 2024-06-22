@@ -2,6 +2,9 @@ import os
 from dotenv import load_dotenv
 from mem0 import Memory
 from flask import Flask, request
+import requests
+import json
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -66,11 +69,32 @@ def rewrite_prompt():
         stream=False
     )
 
-    return r
+    for line in r.iter_lines():
+        if line:
+            content = json.loads(line.decode('utf-8'))
+            value = content['value']
+            # We can print values as they're generated
+            # if value['type'] == 'generation':
+            #     if value['state'] == "start":
+            #         print("\nNEW GENERATION -", value['label'])
+            #     else:
+            #         print("\nEND GENERATION -", value['label'])
+            # elif value['type'] == "chunk":
+            #     print(value['value'], end="")
+            if value['type'] == "outputs":
+                # Or we can read from the outputs at the end
+                # Currently we include everything by ID and by label - this will likely change in future in a breaking
+                # change but with ample warning
+                print("\nFINAL OUTPUTS:")
+                print(json.dumps(value, indent=4))
+
+    print(r.text)
+    
+    return "ok"
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=os.getenv("PORT", 5000))
-    # app.run(debug=True)
+    # app.run(host="0.0.0.0", port=os.getenv("PORT", 5000))
+    app.run(debug=True)
 
 
 
